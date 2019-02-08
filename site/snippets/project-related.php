@@ -1,13 +1,13 @@
-<? $related_pages = (isset($related_pages) && $related_pages->count() > 1) ? $related_pages : $site->find('projects')->children()->not($page)->not($page->nextVisible())->shuffle()->limit(3) ?>
-
 <section class="bg-greylighter u-pv2">
+
   <div>
     <p style="margin: 4rem 0 1rem; font-size: 2rem;">related projects</p>
   </div>
   
   <!-- Project Cards -->
   <div class="card-container owl-carousel u-mt1">
-    <? foreach ($related_pages as $project) : ?>
+
+    <? foreach ($page->relatedProjects(3) as $project) : ?>
 
       <a href="<?php echo $project->url() ?>" class="card card--related">
         <? if($image = $project->featuredimage()->toFile()) : ?>
