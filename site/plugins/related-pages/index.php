@@ -5,7 +5,7 @@ Kirby::plugin('ldanielswakman/related-projects', [
     'relatedProjects' => function ($limit = 3) {
 
       $comparedPage = $this;
-      $siblings = $this->siblings(false);
+      $siblings = $this->siblings(false)->visible();
 
       $relatedProjects = array();
       $allMatches = array();
