@@ -1,4 +1,48 @@
-<? $related_pages = (isset($related_pages) && $related_pages->count() > 1) ? $related_pages : $site->find('projects')->children()->not($page)->not($page->nextVisible())->shuffle()->limit(3) ?>
+<?
+  
+  /**
+   * Helper function to prepare an array of values for text comparison
+   * @param array
+   * @return array
+   */
+  function normalizeWords($words) {
+    $result = [];
+    foreach ($words as $word) {
+      if (str::length($word) <= 3) continue; // Discard short words (the, and, by, ...)
+      $result[] = str::slug($word); // Slugify the word to remove case sensitivity and punctuation
+    }
+    return $result;
+  }
+
+  // Get current page data
+  $page_tags = $page->tags()->split();
+  $page_words = normalizeWords(array_merge($page->title()->split(' '), $page->description()->split(' ')));
+
+  // Prepare related pages
+  $related_pages = [];
+
+  // Loop through visible sibling pages
+  foreach ($page->siblings()->visible() as $sibling) {
+    
+    // Don't compare the current page with itself
+    if ($page->is($sibling)) continue;
+
+    // Get words from the title and description
+    $sibling_words = normalizeWords(array_merge($sibling->title()->split(' '), $sibling->description()->split(' ')));
+
+    // Compare tags and words with the current page, and calculate relevance score
+    $common_tags = count(array_intersect(array_map('strtolower', $page_tags), array_map('strtolower', $sibling->tags()->split())));
+    $common_words = count(array_intersect(array_map('strtolower', $page_words), array_map('strtolower', $sibling_words)));
+    $relevance = $common_tags + $common_words;
+
+    // Add sibling to related pages list, using the relevance score as the array key
+    $related_pages[$relevance.'_'.$sibling->uid()] = $sibling;
+  }
+
+  // Get the three highest-relevance siblings
+  krsort($related_pages);
+  $related_pages = array_slice($related_pages, 0, 3);
+?>
 
 <section class="bg-greylighter u-pv2">
   <div>
