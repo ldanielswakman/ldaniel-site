@@ -1,0 +1,24 @@
+{
+    "name": "ldaniel/related-pages",
+    "description": "Kirby Related Pages",
+    "type": "kirby-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pedro Borges",
+            "email": "oi@pedroborg.es"
+        }
+    ],
+    "require": {
+        "getkirby/composer-installer": "^1.1",
+        "yooper/php-text-analysis": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ldaniel\\RelatedPages\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

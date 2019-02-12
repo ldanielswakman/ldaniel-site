@@ -1,5 +1,17 @@
 <?php
 
+return [
+  'ldaniel.relatedpages.limit' => 3,
+  'ldaniel.relatedpages.fields' => [
+    'project' => [
+      'title' => 0.3,
+      'description' => 0.2,
+      'tags' => 0.4,
+      'sections.col_1' => 0.1,
+    ]
+  ]
+];
+
 /*
 
 ---------------------------------------
