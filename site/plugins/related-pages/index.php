@@ -6,7 +6,9 @@ use Kirby\Cms\Pages;
 use Ldaniel\RelatedPages\RelatedPages;
 
 Kirby::plugin('ldaniel/relatedpages', [
+    'hooks' => require_once __DIR__ . '/hooks.php',
     'options' => [
+        'cache' => true,
         'limit' => 3
     ],
     'pageMethods' => [

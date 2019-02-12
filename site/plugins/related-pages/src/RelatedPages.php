@@ -7,6 +7,8 @@ use Kirby\Cms\Pages;
 
 class RelatedPages
 {
+    protected $cache;
+
     protected $fields = [
         'title',
         'description',
@@ -22,6 +24,7 @@ class RelatedPages
 
     public function __construct(Page $page)
     {
+        $this->cache = kirby()->cache('ldaniel.relatedpages');
         $this->page = $page;
         $this->parser = new Parser();
 
@@ -70,6 +73,12 @@ class RelatedPages
 
     protected function extractKeywords(Page $page): array
     {
+        $cacheKey = md5($page->id());
+
+        if ($cached = $this->cache->get($cacheKey)) {
+            return $cached;
+        }
+
         $keywordsByField = [];
 
         foreach ($this->fields as $field => $weight) {
@@ -96,6 +105,8 @@ class RelatedPages
                 ? $fieldContent->split(',')
                 : $this->parser->keywords((string) $fieldContent);
         }
+
+        $this->cache->set($cacheKey, $keywordsByField);
 
         return $keywordsByField;
     }
