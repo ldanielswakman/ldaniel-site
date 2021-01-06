@@ -11,6 +11,8 @@
 
   <?php snippet('nav') ?>
 
+  <?php snippet('migrate-modal') ?>
+
   <?php snippet('contact', ['page' => $page]) ?>
   <?php if(isset($contact_active) && $contact_active == true) : ?>
     <script>openContactForm()</script>
